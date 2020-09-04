@@ -1,2 +1,2 @@
-# MVC-php
-PHP basic MVC made by potat0
+# Basic MVC made with php
+README will change soon...
