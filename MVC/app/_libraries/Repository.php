@@ -62,13 +62,13 @@
 
             $params_sql = "";
             foreach($object->db_properties as $param){
-                $params_sql = $params_sql . ',';
+                $params_sql = $params_sql . '`' . $param . '`,';
             }
             $params_sql = substr($params_sql, 0, -1);
 
             $values_sql = "";
             foreach($object->db_properties as $param){
-                $values_sql = $values_sql . $object->$param . ',';
+                $values_sql = $values_sql . '\'' . $object->$param . '\',';
             }
             $values_sql = substr($values_sql, 0, -1);
 

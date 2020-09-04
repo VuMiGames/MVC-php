@@ -15,7 +15,7 @@
 
         // * The main function for view
         public function index(){
-            require_once '../models/User.php';
+            require_once '../app/models/User.php';
 
             $newUser = new User();
             $newUser->username = "Michu123";
@@ -23,9 +23,9 @@
             $newUser->password = "password-test";
             $this->getRepository()->save('users', $newUser);
 
-            $user = $this->getRepository()->getByTag('users', 1, 'user_id');
+            $user = $this->getRepository()->getByTag('users', 2, 'user_id');
 
-            $data = 
+            $data =
             [
                 'title' => 'Pages',
                 'data' => $user->username
