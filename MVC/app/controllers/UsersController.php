@@ -5,17 +5,20 @@
     */
 
     class UsersController extends Controller {
+
+        // * Assign the model that this controller is using
         public function __construct(){
-            $this->userModel = $this->model('User');
+            $this->loadRepository();
+            $this->getRepository()->addRepo('users');
+            $this->getRepository()->addRepo('posts');
+            $this->getRepository()->getAll('users');
         }
 
+        // * The main function for view
         public function index(){
-            $users = $this->userModel->getPosts();
-
             $data = 
             [
-                'title' => 'Welcome',
-                'users' => $users
+                'title' => 'Pages'
             ];
             
             $this->view('users/index', $data);

@@ -1,5 +1,5 @@
 <?php
-    class Post {
+    class PostRepository extends Repository {
         private $db;
 
         public function __construct(){

@@ -1,17 +1,20 @@
 <?php
     /*
     * Base Controller
-    * Loads the model and views
+    * Loads the repository and views
     */
-    class Controller{
+    class Controller extends Repository {
         
-        // Load model
-        public function model($model){
-            // Require model file
-            require_once '../app/models/' . $model . '.php';
+        protected $repo;
 
-            //Instatiate model
-            return new $model();
+        // Set repository value
+        public function loadRepository(){
+            $this->repo = new Repository();
+        }
+
+        // Get a reference to repository
+        public function getRepository(){
+            return $this->repo;
         }
 
         // Load view

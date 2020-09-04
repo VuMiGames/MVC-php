@@ -1,5 +1,5 @@
 <?php
-    class User{
+    class UserRepository extends Repository{
         private $db;
 
         public function __construct(){

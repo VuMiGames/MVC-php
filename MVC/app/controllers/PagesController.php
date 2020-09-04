@@ -8,7 +8,10 @@
 
         // * Assign the model that this controller is using
         public function __construct(){
-            
+            $this->loadRepository();
+            $this->getRepository()->addRepo('users');
+            $this->getRepository()->addRepo('posts');
+            $this->getRepository()->getAll('posts');
         }
 
         // * The main function for view
