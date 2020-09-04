@@ -18,7 +18,8 @@
         public function index(){
             $data = 
             [
-                'title' => 'Pages'
+                'title' => 'Pages',
+                'data' => $this->getRepository()->getAll('users')
             ];
             
             $this->view('users/index', $data);

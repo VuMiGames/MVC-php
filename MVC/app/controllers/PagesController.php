@@ -11,7 +11,6 @@
             $this->loadRepository();
             $this->getRepository()->addRepo('users');
             $this->getRepository()->addRepo('posts');
-            $this->getRepository()->getAll('posts');
         }
 
         // * The main function for view
