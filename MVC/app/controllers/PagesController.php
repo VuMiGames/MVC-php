@@ -6,11 +6,11 @@
 
     class PagesController extends Controller {
 
-        // * Assign the model that this controller is using
+        // * Assign the repositories that this controller is using
         public function __construct(){
             $this->loadRepository();
-            $this->getRepository()->addRepo('users');
-            $this->getRepository()->addRepo('posts');
+            $this->getRepository()->useRepo('users');
+            $this->getRepository()->useRepo('posts');
         }
 
         // * The main function for view

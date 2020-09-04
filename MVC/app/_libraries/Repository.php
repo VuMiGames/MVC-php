@@ -8,7 +8,7 @@
             $this->repos = $repos;
         }
 
-        public function addRepo($repo){
+        public function useRepo($repo){
             array_push($this->repos, $repo);
         }
 
@@ -30,25 +30,51 @@
             }
             $sql = "SELECT * FROM $repo";
             $this->db->query($sql);
-            $this->db->execute();
-            $this->db->resultSet();
-            echo "<pre>"; print_r($this->db->resultSet()); echo "</pre>";
+            return $this->db->resultSet();
+            //echo "<pre>"; print_r($this->db->resultSet()); echo "</pre>";
         }
 
-        protected function getByID($repo, $id, $id_str = "id"){
-            if(!array_key_exists($repo, $this->repos)){
+        protected function getByTag($repo, $valueSearch, $tag = "id"){
+            if(!in_array($repo, $this->repos)){
                 die('Repository not exist');
             }
-            if(strpos(trim($repo), ' ') !== false || strpos(trim($id), ' ') !== false || strpos(trim($id_str), ' ') !== false)
+            if(strpos(trim($repo), ' ') !== false || strpos(trim($valueSearch), ' ') !== false || strpos(trim($tag), ' ') !== false)
             {
                 die('Access denied');
             }
-            
-            $sql = "SELECT * FROM $repo WHERE :id_str = :id";
+
+            $sql = "SELECT * FROM users WHERE $tag = :valueSearch";
             $this->db->query($sql);
-            $this->db->bind(":id_str", $id_str);
-            $this->db->bind(":id", $id);
+            $this->db->bind(":valueSearch", $valueSearch);
             return $this->db->single();
+        }
+
+        // If you need test data you can put more in $count, by using
+        // * save('repo', obj, 100)
+        // * 10 is safe limit, it's still WIP
+        protected function save($repo, $object, $count=1){
+            if(!in_array($repo, $this->repos)){
+                die('Repository not exist');
+            }
+            if(!is_object($object)){
+                die('You need to pass object to save');
+            }
+
+            $params_sql = "";
+            foreach($object->db_properties as $param){
+                $params_sql = $params_sql . ',';
+            }
+            $params_sql = substr($params_sql, 0, -1);
+
+            $values_sql = "";
+            foreach($object->db_properties as $param){
+                $values_sql = $values_sql . $object->$param . ',';
+            }
+            $values_sql = substr($values_sql, 0, -1);
+
+            $sql = "INSERT INTO $repo ($params_sql) VALUES ($values_sql)";
+            $this->db->query($sql);
+            $this->db->execute();
         }
     }
 ?>
