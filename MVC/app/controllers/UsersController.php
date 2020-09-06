@@ -22,14 +22,15 @@
             $newUser->email = "email@gmail.com";
             $newUser->password = "password-test";
             $newUser->status = "User";
-            $this->getRepository()->save('users', $newUser, 5);
+            $id_insert = $this->getRepository()->save('users', $newUser);
+            $newUser->setID($id_insert[0]);
 
-            $user = $this->getRepository()->getAll('users');
+            $users = $this->getRepository()->getAll('users');
 
             $data =
             [
                 'title' => 'Pages',
-                'data' => $user
+                'data' => $users
             ];
             
             $this->view('users/index', $data);

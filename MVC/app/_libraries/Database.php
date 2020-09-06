@@ -7,7 +7,7 @@
         * -> Bind values
         * -> Return rows and results
     */
-    class Database{
+    class Database {
         private $host = DB_HOST;
         private $user = DB_USERNAME;
         private $password = DB_PASSWORD;
@@ -78,6 +78,11 @@
         // Get row count
         public function rowCount(){
             return $this->stmt->rowCount();
+        }
+
+        // * Get last inserted ID
+        public function lastInsertID(){
+            return $this->dbh->lastInsertID();
         }
     }
 ?>

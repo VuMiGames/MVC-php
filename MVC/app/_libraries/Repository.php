@@ -76,38 +76,43 @@
             $values_sql = substr($values_sql, 0, -1);
 
             $sql = "INSERT INTO $repo ($params_sql) VALUES ($values_sql)";
+            $ids = [];
             for($i = 0; $i<$count; $i++){
                 $this->db->query($sql);
                 $this->db->execute();
+                $ids[$i] = $this->db->lastInsertID();
             }
+            return $ids;
         }
         // * Delete any model from DB
-        protected function delete($repo, $object, $id){
+        protected function delete($repo, $id){
             if(!in_array($repo, $this->repos)){
-                die('Repository not exist');
+                die('Repository not existing');
             }
-            if(!is_object($object)){
-                die('You need to pass object to save');
+            $obj_class = substr(ucwords($repo), 0, -1);
+            if(!file_exists("../app/models/" . $obj_class . ".php")){
+                die('Class not existing');
+            }
+            if(!is_int($id)){
+                die('ID is not a number');
             }
 
-            // * Get properties from Model Class
-            $reflect = new ReflectionClass($object);
-            $props = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
+            $object = new $obj_class();
+            $id_field = $object->getIDfield();
 
-            $params_sql = "";
-            $values_sql = "";
-            foreach($props as $prop){
-                $prop = $prop->getName();
-                $params_sql = $params_sql . '`' . $prop . '`,';
-                $values_sql = $values_sql . '\'' . $object->$prop . '\',';
-            }
-            $params_sql = substr($params_sql, 0, -1);
-            $values_sql = substr($values_sql, 0, -1);
-
-            $sql = "INSERT INTO $repo ($params_sql) VALUES ($values_sql)";
-            for($i = 0; $i<$count; $i++){
+            if($id == 0){
+                $sql = "DELETE FROM $repo";
                 $this->db->query($sql);
                 $this->db->execute();
+            }else{
+                $sql = "SELECT * FROM $repo WHERE $id_field = $id";
+                $this->db->query($sql);
+                $this->db->execute();
+                if($this->db->rowCount() != 0){
+                    $sql = "DELETE FROM $repo WHERE $id_field = $id";
+                    $this->db->query($sql);
+                    $this->db->execute();
+                }
             }
         }
     }
