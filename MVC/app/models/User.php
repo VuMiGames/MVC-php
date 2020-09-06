@@ -1,10 +1,18 @@
 <?php
     class User {
 
-        public $db_properties;
+        private $id;
+        public $username;
+        public $email;
+        public $password;
+        public $status;
 
-        public function __construct($db_props = ['username', 'email', 'password']) {
-            $this->db_properties = $db_props;
+        public function getID(){
+            return $this->user_id;
+        }
+
+        public function setID($id){
+            
         }
 
         /*public function __get($param){
