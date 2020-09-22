@@ -11,6 +11,7 @@
             $this->loadRepository();
             $this->getRepository()->useRepo('users');
             $this->getRepository()->useRepo('posts');
+            $this->addMiddleware('Auth');
         }
 
         // * The main function for view
@@ -33,6 +34,6 @@
                 'data' => $users
             ];
             
-            $this->view('users/index', $data);
+            $this->view('users/index', $data, ['Auth']);
         }
     }
