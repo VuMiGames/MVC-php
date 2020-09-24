@@ -3,11 +3,10 @@
         protected $middlewares = array();
         protected $view = '';
         protected $controllerMethod = NULL;
-        protected $request_type = 'POST';
+        protected $request_type = 'GET';
 
         public function __construct($request, $view, $controller, $midd = array()){
             $this->request_type = $request;
-            $this->checkRequestType();
             $this->view = $view;
             $this->controllerMethod = $controller;
             $this->middlewares = $midd;
@@ -25,6 +24,10 @@
             }
         }
 
+        public function getRequestType(){
+            return $this->request_type;
+        }
+
         public function triggerController(){
             //Controller array -> Controller@method
             $cArr = explode('@', $this->controllerMethod);
@@ -33,17 +36,17 @@
             try{
                 if(file_exists('../app/controllers/' . ucwords($controller) . '.php')){
                     // If exists,
-                    // Require the middleware
+                    // Require the controller
                     require_once '../app/controllers/' . ucwords($controller) . '.php';
-                    // Instantiate middleware class
+                    // Instantiate controller class
                     $controller = new $controller;
                     if(method_exists($controller, $method)){
                         $controller->$method();
                     }else{
-                        throw new Exception('Controller method: ' . $method . ', does not exist');
+                        throw new Exception('Controller method: "' . $method . '", does not exist');
                     }
                 }else{
-                    throw new Exception('Controller ' . $midd . ' does not exist');
+                    throw new Exception('Controller "' . $controller . '" does not exist');
                 }
             }
             catch (Exception $e){
@@ -62,7 +65,7 @@
                         // Instantiate middleware class
                         $midd = new $midd;
                     }else{
-                        throw new Exception('Middleware ' . $midd . ' does not exist');
+                        throw new Exception('Middleware "' . $midd . '" does not exist');
                     }
                 }
             }

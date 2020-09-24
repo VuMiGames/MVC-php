@@ -13,8 +13,10 @@
 
         public function routes(){
             $this->router = new Router();
-            $this->router->addRoute(new Route('GET', '/', 'MainController@index'));
+            $this->router->addRoute(new Route('GET', '/', 'MainController@index', ['Auth']));
             $this->router->addRoute(new Route('GET', 'users', 'UsersController@index', ['Auth']));
+            $this->router->addRoute(new Route('GET', 'login', 'AuthController@loginPage'));
+            $this->router->addRoute(new Route('POST', 'login', 'AuthController@login'));
         }
 
         public function __construct(){
@@ -25,18 +27,32 @@
 
             // Then it's home '/' url
             if($url === NULL){
-                if(!$this->router->routeExists($urlAbs)){
-                    // Add 404
-                    die('Route not found');
+                if(!$this->router->routeExists($urlAbs, $_SERVER['REQUEST_METHOD'])){
+                    /*
+                        * Route not existing, show 404 page
+                    */
+                    require_once '../app/views/404.php';
+                    exit;
                 }
                 // Route to home view
                 $urlAbs = '/';
             }
+
+            if(!$this->router->routeExists($urlAbs, $_SERVER['REQUEST_METHOD'])){
+                /*
+                    * Route not existing, show 404 page
+                */
+                require_once '../app/views/404.php';
+                exit;
+            }
+
             if(substr($urlAbs, -1) == '/' && strlen($urlAbs) != 1){
                 $urlAbs = substr($urlAbs, 0, -1);
             }
 
-            $route = $this->router->getRoute($urlAbs);
+            $route = $this->router->getRoute($urlAbs, $_SERVER['REQUEST_METHOD']);
+            // * Check for request type
+            $route->checkRequestType();
             // Add error handle
             $route->triggerMiddlewares() ? null : die('');
             $route->triggerController();

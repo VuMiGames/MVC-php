@@ -5,8 +5,7 @@
         public function check(){
             $this->startSession();
             if(!isset($_SESSION['user'])){
-                print_r('User not authenticated');
-                return false;
+                header('Location: /MVC/login');
             }
             return true;
         }
