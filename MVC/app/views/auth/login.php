@@ -10,6 +10,7 @@
     <input name="user" type="text" placeholder="Username"></input>
     <input name="password" type="password" placeholder="Password"></input>
     <button type="submit">Login</button>
-   </form> 
+   </form>
+   <?php if(isset($data['errors'])){ foreach($data['errors'] as $error){ echo $error . '</br>'; } }?>
 </body>
 </html>
