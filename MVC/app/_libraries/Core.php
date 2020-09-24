@@ -1,19 +1,47 @@
 <?php
     /*
-    * App Core Class
-    * Creates URL & loads core controller
-    * URL FORMAT - /controller/method/params
+        * App Core Class
+        * Creates URL & loads core controller
+        * URL FORMAT - /controller/method/params
     */
 
     class Core{
         protected $currentController = 'PagesController';
         protected $currentMethod = 'index';
         protected $params_arr = [];
+        protected $router;
+
+        public function routes(){
+            $this->router = new Router();
+            $this->router->addRoute(new Route('GET', '/', 'MainController@index'));
+            $this->router->addRoute(new Route('GET', 'users', 'UsersController@index', ['Auth']));
+        }
 
         public function __construct(){
-            //print_r($this->getUrl());
+            $this->routes();
 
             $url = $this->getUrl();
+            $urlAbs = isset($_GET['url']) ? $_GET['url'] : '/';
+
+            // Then it's home '/' url
+            if($url === NULL){
+                if(!$this->router->routeExists($urlAbs)){
+                    // Add 404
+                    die('Route not found');
+                }
+                // Route to home view
+                $urlAbs = '/';
+            }
+            if(substr($urlAbs, -1) == '/' && strlen($urlAbs) != 1){
+                $urlAbs = substr($urlAbs, 0, -1);
+            }
+
+            $route = $this->router->getRoute($urlAbs);
+            // Add error handle
+            $route->triggerMiddlewares() ? null : die('');
+            $route->triggerController();
+
+            /*
 
             if(isset($url[0])){
                 // Look in controllers for first value
@@ -47,8 +75,8 @@
                 // Call a callback with array of params
                 call_user_func_array([$this->currentController, $this->currentMethod], $this->params_arr);
             }else{
-                //Home page index.php
-            }
+                // Not existing page, do 404
+            }*/
         }
 
         public function getUrl(){
@@ -57,8 +85,9 @@
                 $url = filter_var($url, FILTER_SANITIZE_URL);
                 $url = explode('/', $url);
                 return $url;
+            }else{
+                return NULL;
             }
-            
         }
     }
     

@@ -5,8 +5,9 @@
         public function check(){
             $this->startSession();
             if(!isset($_SESSION['user'])){
-                header("Location: /pages");
-                exit();
+                print_r('User not authenticated');
+                return false;
             }
+            return true;
         }
     }

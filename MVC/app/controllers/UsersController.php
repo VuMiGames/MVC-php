@@ -11,7 +11,6 @@
             $this->loadRepository();
             $this->getRepository()->useRepo('users');
             $this->getRepository()->useRepo('posts');
-            $this->addMiddleware('Auth');
         }
 
         // * The main function for view
