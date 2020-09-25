@@ -23,4 +23,26 @@
             }
             return 'OK';
         }
+
+        public function validateRegex($text, $regex){
+            return preg_match($regex, $text);
+        }
+
+        public function validateGroup($typeArray, $dataArray){
+            if(!is_array($typeArray) || !is_array($dataArray)){
+                die('Validation group must be an array');
+            }
+            if(count($typeArray) < count($dataArray) || count($dataArray) < count($typeArray)){
+                die('Type and data array must be the same length');
+            }
+            $errorsArr = [];
+            for($i = 0; $i < count($typeArray); $i++){
+                $type = $typeArray[$i];
+                $data = $dataArray[$i];
+                if(!preg_match($this->validators[$type], $data)){
+                    array_push($errorsArr, $this->error_msgs[$type]);
+                }
+            }
+            return $errorsArr;
+        }
     }

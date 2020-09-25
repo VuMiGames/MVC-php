@@ -15,8 +15,12 @@
             $this->router = new Router();
             $this->router->addRoute(new Route('GET', '/', 'MainController@index', ['Auth']));
             $this->router->addRoute(new Route('GET', 'users', 'UsersController@index', ['Auth']));
+            // ! AUTH
             $this->router->addRoute(new Route('GET', 'login', 'AuthController@loginPage'));
             $this->router->addRoute(new Route('POST', 'login', 'AuthController@login'));
+            $this->router->addRoute(new Route('GET', 'logout', 'AuthController@logout'));
+            $this->router->addRoute(new Route('GET', 'register', 'AuthController@registerPage'));
+            $this->router->addRoute(new Route('POST', 'register', 'AuthController@register'));
         }
 
         public function __construct(){

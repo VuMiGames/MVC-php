@@ -6,10 +6,13 @@
     class Controller extends Repository {
         
         protected $repo;
+        protected $validator;
 
         // Set repository value
         public function loadRepository(){
             $this->repo = new Repository();
+            require_once '../app/helpers/Validation.php';
+            $this->validator = new Validation();
         }
 
         // Get a reference to repository
