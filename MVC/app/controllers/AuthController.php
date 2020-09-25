@@ -25,19 +25,13 @@
 
         // * HANDLE GET request for logout page
         public function logout(){
-            if(session_status() != PHP_SESSION_NONE){
+            if(session_status() == PHP_SESSION_NONE){
                 session_start();
-                if(isset($_SESSION['user'])){
-                    unset($_SESSION['user']);
-                    unset($_SESSION['email']);
-                }
+                session_unset();
                 session_destroy();
             }else{
-                if(isset($_SESSION['user'])){
-                    unset($_SESSION['user']);
-                    unset($_SESSION['email']);
-                    session_destroy();
-                }
+                session_unset();
+                session_destroy();
             }
             $this->changeLocation('/MVC/login');
         }
@@ -134,7 +128,7 @@
                 session_start();
                 $_SESSION['user'] = $name;
                 $_SESSION['email'] = $email;
-                $_SESSION['user_id'] = $user_id;
+                //$_SESSION['user_id'] = $user_id;
             }
             $this->changeLocation(($this->must_login_after_register == 1 ? '/MVC/login' : $this->page_after_register), $this->wait_after_register, $this->wait_after_register_ms);
         }

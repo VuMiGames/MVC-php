@@ -15,23 +15,14 @@
 
         // * The main function for view
         public function index(){
-            require_once '../app/models/User.php';
-
-            $newUser = new User();
-            $newUser->username = "Michu123";
-            $newUser->email = "email@gmail.com";
-            $newUser->password = "password-test";
-            $id_insert = $this->getRepository()->save('users', $newUser);
-            $newUser->setID($id_insert[0]);
-
             $users = $this->getRepository()->getAll('users');
 
             $data =
             [
                 'title' => 'Pages',
-                'data' => $users
+                'users' => $users
             ];
             
-            $this->view('users/index', $data, ['Auth']);
+            $this->view('users/index', $data);
         }
     }
