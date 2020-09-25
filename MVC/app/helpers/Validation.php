@@ -10,7 +10,7 @@
         public $error_msgs = [
             'auth:username' => 'Username must be 4-11 characters length',
             'auth:password' => 'Password must contain 1 special, lower and uppercase character and min 5 overall',
-            'auth:email' => 'Email is not valid'
+            'auth:email' => 'Email has invalid format'
         ];
 
         public function __construct(){

@@ -21,7 +21,6 @@
             $newUser->username = "Michu123";
             $newUser->email = "email@gmail.com";
             $newUser->password = "password-test";
-            $newUser->status = "User";
             $id_insert = $this->getRepository()->save('users', $newUser);
             $newUser->setID($id_insert[0]);
 

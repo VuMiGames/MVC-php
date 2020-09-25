@@ -1,0 +1,6 @@
+# CREATE users TABLE
+
+CREATE TABLE `mvc`.`users` ( `id` INT(10) NOT NULL AUTO_INCREMENT , `username` VARCHAR(50) NOT NULL , `password` VARCHAR(50) NOT NULL , `email` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+testUser:
+michu:Michu123$:michu@gmail.com

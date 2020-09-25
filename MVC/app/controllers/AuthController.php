@@ -1,7 +1,11 @@
 <?php
     class AuthController extends Controller{
-        public function __construct(){
+        protected $repo;
 
+        public function __construct(){
+            $this->loadRepository();
+            $this->repo = $this->getRepository();
+            $this->repo->useRepo('users');
         }
 
         // * PAGES FOR LOGIN AND REGISTER
@@ -34,20 +38,35 @@
                 array_push($errors, $pass_mess);
             }
 
+            // * Check if any regex errors [Check Validation class in helpers folder]
             if(count($errors) > 0){
-                $this->view('auth/login', ['errors'=>$errors]);
+                $this->view('auth/login', ['errors' => $errors]);
                 exit;
             }
 
-            /*
-                * CHECK DB for username and password
-            */
-            /*if(session_status() == PHP_SESSION_NONE){
-                session_start();
-                $_SESSION['user'] = $name;
-                //header('Location: /MVC/login');
-                $this->view('auth/login', ['errors' => $errors]);
-            }*/
+            // * CHECK DB for username and password
+            $users = $this->repo->getAll('users');
+            require_once '../app/helpers/ArrayUtils.php';
+            $userFound = ArrayUtils::objArraySearch($users, 'username', $name);
+            
+            // Check if users exist
+            if($userFound === null){
+                $this->view('auth/login', ['errors' => 'User does not exist or password is not the same']);
+                exit;
+            }
+
+            // If user exist, then check the password
+            if(md5($password) == $userFound->password){
+                // TODO Just for safety now, will be removed after adding session check
+                if(session_status() == PHP_SESSION_NONE){
+                    session_start();
+                    $_SESSION['user'] = $name;
+                    header('Location: /MVC/users');
+                }
+            }else{
+                $this->view('auth/login', ['errors'=>'User does not exist or password is not the same']);
+                exit;
+            }
         }
 
         public function register(){

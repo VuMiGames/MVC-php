@@ -11,6 +11,6 @@
     <input name="password" type="password" placeholder="Password"></input>
     <button type="submit">Login</button>
    </form>
-   <?php if(isset($data['errors'])){ foreach($data['errors'] as $error){ echo $error . '</br>'; } }?>
+   <?php if(isset($data['errors'])){ if(is_array($data['errors'])){foreach($data['errors'] as $error){ echo $error . '</br>'; }}else{ echo $data['errors'];} }?>
 </body>
 </html>
