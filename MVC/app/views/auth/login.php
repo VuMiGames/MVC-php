@@ -12,5 +12,6 @@
     <button type="submit">Login</button>
    </form>
    <?php if(isset($data['errors'])){ if(is_array($data['errors'])){foreach($data['errors'] as $error){ echo $error . '</br>'; }}else{ echo $data['errors'];} }?>
+   <?php if(isset($data['logged_in'])){ echo $data['logged_in']; }?>
 </body>
 </html>
