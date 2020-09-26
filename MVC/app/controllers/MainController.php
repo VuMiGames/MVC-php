@@ -18,4 +18,8 @@
             $this->dataX = "TOTOT";
             $this->view('index', ['title' => 'Main']);
         }
+
+        public function expired(){
+            $this->view('expired', ['title' => 'Page expired']);
+        }
     }

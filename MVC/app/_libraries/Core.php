@@ -25,6 +25,8 @@
             $this->router->addRoute(new Route('POST', 'forgot', 'AuthController@forgot'));
             $this->router->addRoute(new Route('GET', 'recovery', 'AuthController@recoveryPage'));
             $this->router->addRoute(new Route('POST', 'recovery', 'AuthController@recovery'));
+            // ! Expired route
+            $this->router->addRoute(new Route('GET', 'expired', 'MainController@expired'));
         }
 
         public function __construct(){

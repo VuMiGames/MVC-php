@@ -167,6 +167,7 @@
         public function recoveryPage(){
             if(!isset($_GET['token'])){
                 // ! Show 404, or need authorization / token again
+                $this->changeLocation('/MVC/expired');
                 exit;
             }
             $token = $_GET['token'];
