@@ -43,7 +43,7 @@
                 die('Access denied');
             }
 
-            $sql = "SELECT * FROM users WHERE $tag = :valueSearch";
+            $sql = "SELECT * FROM " . $repo . " WHERE $tag = :valueSearch";
             $this->db->query($sql);
             $this->db->bind(":valueSearch", $valueSearch);
             return $this->db->single();
@@ -52,8 +52,7 @@
         // If you need test data you can put more in $count, by using
         // * save('repo', obj, 100)
         // * 10 is safe limit, it's still WIP
-        protected function save($repo, $object, $count = 1){
-
+        protected function create($repo, $object, $count = 1){
             if(!in_array($repo, $this->repos)){
                 die('Repository not exist');
             }
@@ -84,6 +83,40 @@
             }
             return $ids;
         }
+
+        // * UPDATE object
+        protected function updateObj($repo, $object, $indexes, $values){
+            if(!in_array($repo, $this->repos)){
+                die('Repository not exist');
+            }
+            if(!is_object($object)){
+                die('You need to pass object to update');
+            }
+
+            if((count($indexes) != count($values)) || (count($indexes) == 0 || count($values) == 0)){
+                die('Indexes count and values count must be the same and > 0!');
+            }
+
+            if($this->getByTag($repo, $object->getID(), $object->getIDfield()) != null){
+                $this->create($repo, $object);
+                exit;
+            }
+
+            $params_sql = "";
+            $i = 0;
+            foreach($indexes as $index){
+                $params_sql .= ('`' . $index . '` = ');
+                $val = is_int($values[$i]) ? ($values[$i] . ',') : ('"' . $values[$i] . '",');
+                $params_sql .= $val;
+                $i = $i+1;
+            }
+            $params_sql = substr($params_sql, 0, -1);
+
+            $sql = "UPDATE $repo SET $params_sql";
+            $this->db->query($sql);
+            $this->db->execute();
+        }
+
         // * Delete any model from DB
         protected function delete($repo, $id){
             if(!in_array($repo, $this->repos)){

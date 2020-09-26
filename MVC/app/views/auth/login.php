@@ -13,5 +13,8 @@
    </form>
    <?php if(isset($data['errors'])){ if(is_array($data['errors'])){foreach($data['errors'] as $error){ echo $error . '</br>'; }}else{ echo $data['errors'];} }?>
    <?php if(isset($data['logged_in'])){ echo $data['logged_in']; }?>
+   <h3>Make a new account</h3>
+   <a href="/MVC/register">Register</a>
+   <a href="/MVC/forgot">Forgot password?</a>
 </body>
 </html>

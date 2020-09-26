@@ -21,6 +21,10 @@
             $this->router->addRoute(new Route('GET', 'logout', 'AuthController@logout'));
             $this->router->addRoute(new Route('GET', 'register', 'AuthController@registerPage'));
             $this->router->addRoute(new Route('POST', 'register', 'AuthController@register'));
+            $this->router->addRoute(new Route('GET', 'forgot', 'AuthController@forgotPage'));
+            $this->router->addRoute(new Route('POST', 'forgot', 'AuthController@forgot'));
+            $this->router->addRoute(new Route('GET', 'recovery', 'AuthController@recoveryPage'));
+            $this->router->addRoute(new Route('POST', 'recovery', 'AuthController@recovery'));
         }
 
         public function __construct(){
